@@ -1,54 +1,15 @@
-# React + TypeScript + Vite
+# React + TypeScript + Viteでお試しカウンターアプリ制作
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+先日Vanilla.jsで制作したカウンターアプリを、React（とTypescript）でリファクタリング。
+Javascript Onlyでのスクリプト記述が以下に冗長か、Reactを使うとよく分かる。
 
-Currently, two official plugins are available:
+とりあえず、基本的なこととして、次のことを学んだ。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- viteでの環境構築
+- コンポーネントを分けて読み込ませる
+- useStateでの状態管理
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+またフォームパーツの値取得が意外とクセがあり、
+いちいち考慮して読み込ませるのが少し鬱陶しい。
+それぞれのユースケースは、アプリ制作や実務を通じて学んでいくしかない気がする。
+ベストプラクティス（うまく手を抜く方法）を探っていく所存。
