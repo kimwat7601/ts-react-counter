@@ -2,11 +2,16 @@ import { useState } from 'react';
 import Button from './components/Button.tsx';
 import Span from './components/Span.tsx';
 import Input from './components/Input.tsx';
-import './styles/style.css'
+import MyStorage from './components/Storage.ts';
+import './styles/style.css';
+
+const storage = new MyStorage('counter-app');
+const defaultCount = storage.getItem('count') ? storage.getItem('count') as number : 0;
+const defaultInncNum = storage.getItem('incNum') ? storage.getItem('incNum') as string: '1';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [incNum, setIncNum] = useState('1');
+  const [count, setCount] = useState(defaultCount);
+  const [incNum, setIncNum] = useState(defaultInncNum);
 
   function parseIncNum(incNum: string) {
     const parsedNum = parseInt(incNum, 10);
@@ -20,19 +25,38 @@ function App() {
   }
 
   const handlePlus = () => {
-    // console.log('incNum', Number(parseIncNum(incNum)));
-    setCount(prevState => prevState + Number(parseIncNum(incNum)));
-    // setIncNum(prevState => {
-    //   console.log('prevIncNum', prevState);
-    // })
+    setCount(
+      prevState => {
+        const updateCount = prevState + Number(parseIncNum(incNum));
+        storage.setItem('count', updateCount);
+        storage.save();
+        return updateCount;
+      }
+    );
   };
 
   const handleMinus = () => {
-    setCount(prevState => prevState - Number(parseIncNum(incNum)));
+    setCount(
+      prevState => {
+        const updateCount = prevState - Number(parseIncNum(incNum));
+        storage.setItem('count', updateCount);
+        storage.save();
+        return updateCount;
+      }
+    );
   }
 
   const handleReset = () => {
     setCount(0);
+    storage.setItem('count', 0);
+    storage.save();
+  }
+
+  const handleIncNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(typeof(e.currentTarget.value));
+    setIncNum(e.currentTarget.value);
+    storage.setItem('incNum', e.currentTarget.value);
+    storage.save();
   }
 
   return (
@@ -53,7 +77,7 @@ function App() {
           id='includenum'
           name='includenum'
           value={parseIncNum(incNum)}
-          onChange={(e) => setIncNum(e.currentTarget.value)}
+          onChange={handleIncNum}
         />
       </div>
     </main>
