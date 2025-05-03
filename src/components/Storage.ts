@@ -5,11 +5,17 @@ class MyStorage {
 
     constructor(appName: string) {
         this.#appName = appName;
-        this.#data = JSON.parse(this.#storage[this.#appName] || '{}');
+        try {
+            const storedData = this.#storage.getItem(this.#appName);
+            this.#data = storedData ? JSON.parse(storedData) : {};
+        } catch (e) {
+            console.error('ストレージの読み込みに失敗しました:', e);
+            this.#data = {};
+        }
     }
 
-    getItem(key: string) {
-        return this.#data[key];
+    getItem<T>(key: string): T | null {
+        return (this.#data[key] as T) || null;
     }
 
     setItem(key: string, value: unknown) {
@@ -17,7 +23,11 @@ class MyStorage {
     }
 
     save() {
-        this.#storage[this.#appName] = JSON.stringify(this.#data);
+        try {
+            this.#storage.setItem(this.#appName, JSON.stringify(this.#data));
+        } catch (e) {
+            console.error('ストレージの保存に失敗しました:', e);
+        }
     }
 }
 
